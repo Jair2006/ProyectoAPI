@@ -28,7 +28,7 @@ const User = sequelize.define(modelName, {
     birthdate: {
         type: DataTypes.DATEONLY,
         validate: {
-            isBefore: Date.now()
+            isBefore: new Date().toISOString()
         }
     }
 });

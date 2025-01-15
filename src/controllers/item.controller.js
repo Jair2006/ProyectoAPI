@@ -1,6 +1,5 @@
 import Item from "../models/item.model.js";
 import { Op } from "sequelize";
-let id = 0;
 
 export const getItems = async () => {
   let data = await Item.findAll();
