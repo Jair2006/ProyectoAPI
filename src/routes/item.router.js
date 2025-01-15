@@ -10,19 +10,19 @@ import {
 
 const itemRouter = express.Router();
 
-
-
-itemRouter.get("/search", (req, res)=>{
-    getItemsBySearch(req.query).then((data)=> {
-        if(data.length){
-            res.status(200).json(data)
-        }else{
-            res.status(404).json({message: "Item not found"})
-        }
-    }).catch((err)=>{
-        console.error("Error on GET /search route:", err);
-        res.status(500).json({message:err})
+itemRouter.get("/search", (req, res) => {
+  getItemsBySearch(req.query)
+    .then((data) => {
+      if (data.length) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({ message: "Item not found" });
+      }
     })
+    .catch((err) => {
+      console.error("Error on GET /search route:", err);
+      res.status(500).json({ message: err });
+    });
 });
 
 itemRouter.get("/:id", (req, res) => {
@@ -77,6 +77,19 @@ itemRouter.put("/:id", (req, res) => {
     });
 });
 
-itemRouter.delete("/:id", deleteItem);
+itemRouter.delete("/:id", (req, res) => {
+  deleteItem(req.params.id)
+    .then((data) => {
+      if (data) {
+        res.status(200).json({ message: "Item deleted.", data: data });
+      } else {
+        res.status(400).json({ message: "Item not deleted.", data: data });
+      }
+    })
+    .catch((err) => {
+      console.error("Error on DELETE /:id route:", err);
+      res.status(500).json({ message: err });
+    });
+});
 
 export default itemRouter;

@@ -29,7 +29,7 @@ export const getItemsBySearch = async (filters) => {
     Object.assign(whereFilters, {
       price: {
         [Op.lte]: filters.maxPrice ?? 9999999,
-        [Op.gte]: filters.minPrice ?? 0
+        [Op.gte]: filters.minPrice ?? 0,
       },
     });
   }
@@ -58,7 +58,11 @@ export const updateItem = async (id, body) => {
   return data[0];
 };
 
-export const deleteItem = (req, res) => {
-  const { id } = req.params;
-  res.send(`Eliminando el item con id: ${id}`);
+export const deleteItem = async (id) => {
+  let data = await Item.destroy({
+    where: {
+      id: id,
+    },
+  });
+  return data;
 };
