@@ -7,12 +7,20 @@ export const createUser = async (body) => {
 };
 
 export const getUsers = async () => {
-  let data = await User.findAll();
+  let data = await User.findAll({
+    attributes: {
+      exclude: ["password"],
+    },
+  });
   return data;
 };
 
 export const getUserById = async (id) => {
-  let data = await User.findByPk(id);
+  let data = await User.findByPk(id, {
+    attributes: {
+      exclude: ["password"],
+    },
+  });
   return data;
 };
 
@@ -48,6 +56,9 @@ export const getUserBySearch = async (filters) => {
     });
   }
   let data = await User.findAll({
+    attributes: {
+      exclude: ["password"],
+    },
     where: {
       [Op.and]: whereFilters,
     },
