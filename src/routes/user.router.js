@@ -82,6 +82,23 @@ userRouter.put("/:id", (req, res) => {
     });
 });
 
+userRouter.patch("/:id", (req, res) => {
+  updateUser(req.params.id, req.body)
+    .then((data) => {
+      if (data) {
+        res
+          .status(200)
+          .json({ message: "User updated successfully", data: data });
+      } else {
+        res.status(404).json({ message: "User not update", data: data });
+      }
+    })
+    .catch((err) => {
+      console.error("Error on PAtch /:id route:", err);
+      res.status(500).json({ message: err });
+    });
+});
+
 userRouter.delete("/:id", (req, res) => {
   deleteUser(req.params.id)
     .then((data) => {

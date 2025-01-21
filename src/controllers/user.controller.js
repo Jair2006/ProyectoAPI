@@ -56,7 +56,31 @@ export const getUserBySearch = async (filters) => {
 };
 
 export const updateUser = async (id, body) => {
-  let data = await User.update(body, {
+  let payload = {
+    name: body.name,
+    lastname: body.lastname,
+    email: body.email,
+    birthdate: body.birthdate,
+  };
+  let data = await User.update(payload, {
+    where: {
+      id: id,
+    },
+  });
+  return data[0];
+};
+
+export const patchUser = async (id, body) => {
+  let fields = ["name", "lastname", "email", "birthdate"];
+  let payload = {};
+
+  fields.forEach((field) => {
+    if (field in body) {
+      payload[field] = body[field];
+    }
+  });
+
+  let data = await User.update(payload, {
     where: {
       id: id,
     },
