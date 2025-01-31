@@ -7,6 +7,7 @@ import {
   updateItem,
   deleteItem,
 } from "../controllers/item.controller.js";
+import isAuthorized from "../../middlewares/auth.js";
 
 const itemRouter = express.Router();
 
@@ -77,7 +78,7 @@ itemRouter.put("/:id", (req, res) => {
     });
 });
 
-itemRouter.delete("/:id", (req, res) => {
+itemRouter.delete("/:id", isAuthorized, (req, res) => {
   deleteItem(req.params.id)
     .then((data) => {
       if (data) {
