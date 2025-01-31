@@ -7,11 +7,11 @@ import {
   updateItem,
   deleteItem,
 } from "../controllers/item.controller.js";
-import isAuthorized from "../../middlewares/auth.js";
+import isAuthorized, { isAdmin, isClient, isEmployee } from "../../middlewares/auth.js";
 
 const itemRouter = express.Router();
 
-itemRouter.get("/search", (req, res) => {
+itemRouter.get("/search", isClient, (req, res) => {
   getItemsBySearch(req.query)
     .then((data) => {
       if (data.length) {
@@ -52,7 +52,7 @@ itemRouter.get("/", (req, res) => {
     });
 });
 
-itemRouter.post("/", (req, res) => {
+itemRouter.post("/", isEmployee, (req, res) => {
   createItem(req.body)
     .then((data) => {
       res.status(201).json(data);
@@ -63,7 +63,7 @@ itemRouter.post("/", (req, res) => {
     });
 });
 
-itemRouter.put("/:id", (req, res) => {
+itemRouter.put("/:id",isEmployee, (req, res) => {
   updateItem(req.params.id, req.body)
     .then((data) => {
       if (data) {
@@ -78,7 +78,7 @@ itemRouter.put("/:id", (req, res) => {
     });
 });
 
-itemRouter.delete("/:id", isAuthorized, (req, res) => {
+itemRouter.delete("/:id", isAdmin, (req, res) => {
   deleteItem(req.params.id)
     .then((data) => {
       if (data) {
